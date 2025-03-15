@@ -1,0 +1,45 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore composer dependencies (if used)
+vendor/
+composer.lock
+
+# Ignore node modules (if using frontend dependencies)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Ignore CodeIgniter cache and logs
+application/cache/*
+application/logs/*
+!application/logs/index.html  # Allow index.html to keep the folder structure
+
+# Ignore environment configuration
+application/config/database.php
+
+# Ignore sessions (if using file-based sessions)
+application/session/
+
+# Ignore uploads (if applicable)
+uploads/
+!uploads/index.html  # Allow index.html to keep the folder structure
+
+# Ignore IDE and editor-specific files
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.idea/
+.vscode/
+nbproject/
+
+# Ignore build artifacts
+*.log
+*.bak
+*.sql
+*.tar.gz
+*.zip
+*.env
+application/config/database.php
