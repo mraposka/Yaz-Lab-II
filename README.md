@@ -69,6 +69,13 @@ Run PHPUnit tests using:
 composer test:coverage
 ```
 
+## 📌 Project Management
+
+Track the project's progress on **Trello**:  
+
+[![Trello Board](https://img.shields.io/badge/Trello-Yaz--Lab--II-blue?logo=trello)](https://trello.com/b/kJAghvKq)
+
+
 ## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
