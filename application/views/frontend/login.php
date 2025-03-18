@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="tr">
 
 <head>
     <meta charset="UTF-8">
@@ -7,6 +8,7 @@
     <title>Giriş Yap</title>
     <script src="<?php echo base_url('/application/views/frontend/');?>vue.js"></script>
     <script src="<?php echo base_url('/application/views/frontend/');?>tailwind.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Axios eklendi -->
 </head>
 
 <body class="bg-[#fffaf2] flex items-center justify-center min-h-screen">
@@ -30,32 +32,37 @@
     </div>
 
     <script>
-        const { createApp } = Vue;
+    const { createApp } = Vue;
 
-        createApp({
-            data() {
-                return {
-                    tc: "",
-                    password: "",
-                    error: ""
-                };
-            },
-            methods: {
-                login() {
-                    if (this.tc.length !== 11 || !/^[0-9]+$/.test(this.tc)) {
-                        this.error = "Geçerli bir T.C. kimlik numarası girin.";
-                        return;
+    createApp({
+        data() {
+            return {
+                tc: "",
+                password: "",
+                error: ""
+            };
+        },
+        methods: {
+            login() {
+                axios.post("<?php echo base_url('web/login'); ?>", {
+                    tc: this.tc,
+                    password: this.password
+                })
+                .then(response => {
+                    if (response.data.success) {
+                        alert("Giriş başarılı!");
+                    } else {
+                        this.error = response.data.message;
                     }
-                    if (this.password.length < 6) {
-                        this.error = "Şifre en az 6 karakter olmalıdır.";
-                        return;
-                    }
-                    this.error = "";
-                    alert("Giriş başarılı! (Burada API isteği yapılabilir.)");
-                }
+                })
+                .catch(error => {
+                    console.error("Giriş hatası:", error);
+                    this.error = "Sunucu hatası!";
+                });
             }
-        }).mount('#app');
-    </script>
+        }
+    }).mount('#app');
+</script>
 </body>
 
 </html>
