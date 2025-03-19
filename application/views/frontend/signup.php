@@ -7,6 +7,7 @@
     <title>Kayıt Ol</title>
     <script src="<?php echo base_url('/application/views/frontend/');?>vue.js"></script>
     <script src="<?php echo base_url('/application/views/frontend/');?>tailwind.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Axios eklendi -->
 </head>
 
 <body class="bg-[#fffaf2] flex items-center justify-center min-h-screen">
@@ -35,49 +36,49 @@
     </div>
 
     <script>
-        const { createApp } = Vue;
+    const { createApp } = Vue;
 
-        createApp({
-            data() {
-                return {
-                    tc: "",
-                    nameSurname: "",
-                    lastName: "",
-                    motherName: "",
-                    fatherName: "",
-                    birthDate: "",
-                    birthPlace: "",
-                    gender: "",
-                    password: "",
-                    error: ""
-                };
-            },
-            methods: {
-                signup() {
-                    if (this.tc.length !== 11 || !/^[0-9]+$/.test(this.tc)) {
-                        this.error = "Geçerli bir T.C. kimlik numarası girin.";
-                        return;
+    createApp({
+        data() {
+            return {
+                tc: "",
+                nameSurname: "",
+                motherName: "",
+                fatherName: "",
+                birthDate: "",
+                birthPlace: "",
+                gender: "",
+                password: "",
+                error: ""
+            };
+        },
+        methods: {
+            signup() {
+                axios.post("<?php echo base_url('web/signup'); ?>", {
+                    tc: this.tc,
+                    nameSurname: this.nameSurname,
+                    motherName: this.motherName,
+                    fatherName: this.fatherName,
+                    birthDate: this.birthDate,
+                    birthPlace: this.birthPlace,
+                    gender: this.gender,
+                    password: this.password
+                })
+                .then(response => {
+                    if (response.data.success) {
+                        alert("Kayıt başarılı!");
+                    } else {
+                        this.error = response.data.message;
                     }
-                    if (this.password.length < 6) {
-                        this.error = "Şifre en az 6 karakter olmalıdır.";
-                        return;
-                    }
-                    if (!this.gender) {
-                        this.error = "Cinsiyet seçiniz.";
-                        return;
-                    }
-                    if(!this.motherName){
-                        this.error = "Anne adı boş kalamaz.";
-                    }
-                    if(!this.fatherName){
-                        this.error = "Baba adı boş kalamaz.";
-                    }
-                    this.error = "";
-                    alert("Kayıt başarılı! (Burada API isteği yapılabilir.)");
-                }
+                })
+                .catch(error => {
+                    console.error("Kayıt hatası:", error);
+                    this.error = "Sunucu hatası!";
+                });
             }
-        }).mount('#app');
-    </script>
+        }
+    }).mount('#app');
+</script>
 
     <style>
         .input {

@@ -33,8 +33,11 @@ class Web extends CI_Controller
         $this->load->view('/frontend/adminPanel/advert');
     }
 
-    public function dbtest()
-    {
-        echo $this->db->query("SELECT VERSION()")->row('version');
-    }
+    //tüm ilanlar
+    public function getAdverts(){}
+    // ilan ekleme
+    public function saveAdvert(){}
+    // ilan silme 
+    public function deleteAdvert(){}
+    
 }
