@@ -5,93 +5,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kayıt Ol</title>
-    <script src="<?php echo base_url('/application/views/frontend/');?>vue.js"></script>
-    <script src="<?php echo base_url('/application/views/frontend/');?>tailwind.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Axios eklendi -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // T.C. Kimlik numarası sadece sayı içermeli
+        function validateInput(input) {
+            let value = input.value;
+            if (!/^\d*$/.test(value)) {
+                input.value = value.replace(/[^\d]/g, '');
+            }
+        }
+    </script>
 </head>
 
 <body class="bg-[#fffaf2] flex items-center justify-center min-h-screen">
     <div id="app" class="bg-white shadow-xl rounded-lg p-6 w-96">
         <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800">Kayıt Ol</h2>
-        
-        <form @submit.prevent="signup" class="space-y-4">
-            <input v-model="tc" type="text" maxlength="11" placeholder="T.C. Kimlik Numarası" class="input" required />
-            <input v-model="nameSurname" type="text" placeholder="Ad Soyad" class="input" required />
-            <input v-model="motherName" type="text" placeholder="Anne Adı" class="input" required />
-            <input v-model="fatherName" type="text" placeholder="Baba Adı" class="input" required />
-            <input v-model="birthDate" type="date" class="input" required />
-            <input v-model="birthPlace" type="text" placeholder="Doğum Yeri" class="input" required />
-            
-            <select v-model="gender" class="input" required>
-                <option value="">Cinsiyet Seçiniz</option>
-                <option value="Erkek">Erkek</option>
-                <option value="Kadın">Kadın</option>
-            </select>
-            
-            <input v-model="password" type="password" placeholder="Şifre" class="input" required />
+
+        <!-- ✅ Hata Mesajı -->
+        <div v-if="showError" class="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm text-center">
+            Kayıt başarısız. Lütfen bilgilerinizi kontrol edin.
+        </div>
+
+        <form method="POST" action="<?php echo base_url('signup_user'); ?>">
+            <input v-model="tc" type="text" oninput="validateInput(this)"
+                pattern="[0-9]{11}" name="tc" maxlength="11" minlength="11"
+                placeholder="T.C. Kimlik Numarası" class="input" required title="11 haneli sayı giriniz" />
+
+            <input v-model="name"
+                @input="validateLettersOnly('name', $event)"
+                type="text" name="name" placeholder="Ad"
+                class="input" required title="Sadece harf giriniz" />
+
+            <input v-model="surname"
+                @input="validateLettersOnly('surname', $event)"
+                type="text" name="surname" placeholder="Soyad"
+                class="input" required title="Sadece harf giriniz" />
+
+            <input v-model="birthDate" type="date" name="birthDate" class="input" required />
+
+            <input v-model="email" type="email" name="email" placeholder="Email"
+                class="input" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required />
+
+            <input v-model="password" type="password" minlength="6" maxlength="12"
+                name="password" placeholder="Şifre" class="input" required />
+
             <button type="submit" class="btn">Kayıt Ol</button>
         </form>
-
-        <p v-if="error" class="mt-4 text-red-500 text-center">{{ error }}</p>
     </div>
 
     <script>
-    const { createApp } = Vue;
+        const { createApp } = Vue;
 
-    createApp({
-        data() {
-            return {
-                tc: "",
-                nameSurname: "",
-                motherName: "",
-                fatherName: "",
-                birthDate: "",
-                birthPlace: "",
-                gender: "",
-                password: "",
-                error: ""
-            };
-        },
-        methods: {
-            signup() {
-                axios.post("<?php echo base_url('web/signup'); ?>", {
-                    tc: this.tc,
-                    nameSurname: this.nameSurname,
-                    motherName: this.motherName,
-                    fatherName: this.fatherName,
-                    birthDate: this.birthDate,
-                    birthPlace: this.birthPlace,
-                    gender: this.gender,
-                    password: this.password
-                })
-                .then(response => {
-                    if (response.data.success) {
-                        alert("Kayıt başarılı!");
+        createApp({
+            data() {
+                return {
+                    tc: "",
+                    name: "",
+                    surname: "",
+                    birthDate: "",
+                    email: "",
+                    password: "",
+                    showError: <?php echo $success === 1 ? 'false' : 'true'; ?>
+                };
+            },
+            methods: {
+                validateLettersOnly(field, event) {
+                    const pattern = /^[^0-9]*$/;
+                    const value = event.target.value;
+
+                    if (pattern.test(value)) {
+                        this[field] = value;
                     } else {
-                        this.error = response.data.message;
+                        this[field] = value.replace(/[0-9]/g, '');
                     }
-                })
-                .catch(error => {
-                    console.error("Kayıt hatası:", error);
-                    this.error = "Sunucu hatası!";
-                });
+                }
             }
-        }
-    }).mount('#app');
-</script>
+        }).mount('#app');
+    </script>
 
     <style>
         .input {
             width: 100%;
             padding: 10px;
+            margin-bottom: 10px;
             border: 1px solid #ddd;
             border-radius: 8px;
             outline: none;
             transition: border-color 0.3s;
         }
+
         .input:focus {
             border-color: #4CAF50;
         }
+
         .btn {
             width: 100%;
             background: #4CAF50;
@@ -102,6 +109,7 @@
             cursor: pointer;
             transition: background 0.3s;
         }
+
         .btn:hover {
             background: #45A049;
         }

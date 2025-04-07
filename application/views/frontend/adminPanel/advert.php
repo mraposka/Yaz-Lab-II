@@ -1,150 +1,116 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="<?php echo base_url('application/views/frontend/tailwind.js'); ?>"></script>
-</head>
-<body class="bg-gray-100 flex h-screen">
-
-    <!-- Sidebar -->
-    <div id="sidebar" class="w-64 bg-gray-800 text-white p-6 fixed h-full ">
-        <h2 class="text-2xl font-bold mb-6 text-center">Admin Panel</h2>
-        <ul>
-            <li class="mb-4">
-                <a href="<?php echo base_url('web/admin'); ?>" class="block py-2 px-4 rounded hover:bg-gray-700">Ana Sayfa</a>
-            </li>
-            <li class="mb-4">
-                <a href="<?php echo base_url('web/roleAssignment'); ?>" class="block py-2 px-4 rounded hover:bg-gray-700">Rol Atama</a>
-            </li>
-            <li class="mb-4">
-                <a href="<?php echo base_url('web/advert'); ?>" class="block py-2 px-4 rounded hover:bg-gray-700">İlan Ekle</a>
-            </li>
-        </ul>
-    </div>
-
+<?php include 'header.php';?>
     <!-- Main Content -->
     <div id="app" class="flex-1 p-8 ml-64">
         <h2 class="text-3xl font-bold">Hoşgeldin, Admin!</h2>
-        <p class="text-gray-600 mt-2">İlanları yönetebilirsin.</p>
+        <p class="text-gray-600 mt-2">İlanları Yönetebilirsin.</p>
 
         <!-- İlan Formu -->
-        <div class="bg-white p-6 rounded-lg shadow-lg mt-6">
-            <h2 class="text-2xl font-bold mb-4">İlan Formu</h2>
-            <form @submit.prevent="saveAdvert">
+        <div v-if="showForm" class="bg-white p-2 rounded-lg shadow-lg mt-2">
+            <form method="POST" action="<?php echo base_url('admin/addAdvert'); ?>"
+                class="max-w-xl mx-auto p-6 bg-white rounded-lg shadow" id="custom-form">
+                <!-- Başlık -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">Başlık</label>
-                    <input v-model="newAdvert.title" type="text" class="mt-1 block w-full px-4 py-2 border rounded-lg" required />
+                    <input type="text" name="title" class="mt-1 block w-full px-4 py-2 border rounded-lg" required />
                 </div>
+
+                <!-- Başlangıç Tarihi -->
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Başvuru Koşulları</label>
-                    <textarea v-model="newAdvert.conditions" class="mt-1 block w-full px-4 py-2 border rounded-lg" required></textarea>
+                    <label class="block text-sm font-medium text-gray-700">Başlangıç Tarihi</label>
+                    <input type="date" name="date_start" class="mt-1 block w-full px-4 py-2 border rounded-lg"
+                        required />
                 </div>
+
+                <!-- Bitiş Tarihi -->
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Gerekli Belgeler</label>
-                    <div class="mt-1 block w-full px-4 py-2 border rounded-lg bg-white">
-                        <div v-for="doc in availableDocuments" :key="doc" class="flex items-center">
-                            <input type="checkbox" :value="doc" v-model="newAdvert.documents" class="mr-2" />
-                            <span>{{ doc }}</span>
-                        </div>
-                    </div>
+                    <label class="block text-sm font-medium text-gray-700">Bitiş Tarihi</label>
+                    <input type="date" name="date_end" class="mt-1 block w-full px-4 py-2 border rounded-lg" required />
                 </div>
-                <div class="mb-4 flex gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Başlangıç Tarihi</label>
-                        <input v-model="newAdvert.startDate" type="date" class="mt-1 block w-full px-4 py-2 border rounded-lg" required />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Bitiş Tarihi</label>
-                        <input v-model="newAdvert.endDate" type="date" class="mt-1 block w-full px-4 py-2 border rounded-lg" required />
-                    </div>
+
+                <!-- Pozisyon -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Pozisyon</label>
+                    <select name="position" class="mt-1 block w-full px-4 py-2 border rounded-lg" required>
+                        <?php foreach ($positions as $position) : ?>
+                        <option value="<?php echo $position->id; ?>"><?php echo $position->title; ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
-                    {{ newAdvert.id === null ? 'İlanı Ekle' : 'İlanı Güncelle' }}
+
+                <!-- Departman -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Departman</label>
+                    <select name="department" class="mt-1 block w-full px-4 py-2 border rounded-lg" required>
+                        <?php foreach ($departments as $department) : ?>
+                        <option value="<?php echo $department->id; ?>"><?php echo $department->title; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <!-- Açıklama / Metin -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700">Açıklama</label>
+                    <textarea name="text" rows="5" class="mt-1 block w-full px-4 py-2 border rounded-lg"
+                        placeholder="Açıklama girin..." required></textarea>
+                </div>
+
+                <!-- Gönder butonu -->
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                    Kaydet
                 </button>
             </form>
-        </div>
 
-        <!-- Mevcut İlanlar -->
-        <div class="mt-6">
-            <h2 class="text-2xl font-bold mb-4">Mevcut İlanlar</h2>
-            <ul v-if="adverts.length" class="space-y-4">
-                <li v-for="(advert, index) in adverts" :key="advert.id" class="bg-white p-4 rounded-lg shadow-md flex justify-between">
-                    <div>
-                        <h3 class="text-lg font-bold">{{ advert.title }}</h3>
-                        <p class="text-sm text-gray-500">📅 {{ advert.startDate }} - {{ advert.endDate }}</p>
-                        <p class="text-sm text-gray-700">Koşullar: {{ advert.conditions }}</p>
-                        <p class="text-sm text-gray-700">Belgeler: {{ advert.documents.join(', ') }}</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button @click="editAdvert(index)" class="bg-yellow-500 text-white px-3 py-1 rounded">Düzenle</button>
-                        <button @click="deleteAdvert(advert.id)" class="bg-red-500 text-white px-3 py-1 rounded">Sil</button>
-                    </div>
-                </li>
-            </ul>
-            <p v-else class="text-gray-600">Henüz ilan eklenmedi.</p>
         </div>
     </div>
 
+    <!-- Mevcut İlanlar -->
+    <div class="mt-6">
+        <h2 class="text-2xl font-bold mb-4">Mevcut İlanlar</h2>
+        <ul class="space-y-4">
+            <?php foreach ($ads as $advert) : ?>
+            <li class="bg-white p-4 rounded-lg shadow-md flex justify-between">
+                <div>
+                    <h3 class="text-lg font-bold"><?php echo $advert->title; ?></h3>
+                    <p class="text-sm text-gray-500">📅 <?php echo $advert->date_start; ?> -
+                        <?php echo $advert->date_end; ?></p>
+                    <p class="text-sm text-gray-500">📅 <?php echo $advert->text; ?>
+                </div>
+                <div class="gap-2">
+                    <!-- Düzenle Formu -->
+                    <form action="<?php echo base_url('admin/editAdvert'); ?>" method="POST" class="inline">
+                        <input type="hidden" name="id" value="<?php echo $advert->id; ?>">
+                        <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded">Düzenle</button>
+                    </form>
+
+                    <!-- Sil Formu -->
+                    <form action="<?php echo base_url('admin/deleteAdvert'); ?>" method="POST" class="inline"
+                        onsubmit="return confirm('Silmek istediğinize emin misiniz?');">
+                        <input type="hidden" name="id" value="<?php echo $advert->id; ?>">
+                        <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded">Sil</button>
+                    </form>
+
+                </div>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+        <?php if (empty($ads)) : ?>
+        <p class="text-gray-600">Henüz ilan eklenmedi.</p>
+        <?php endif; ?>
+    </div>
+
     <script>
-        const { createApp } = Vue;
+    const {
+        createApp
+    } = Vue;
 
-        createApp({
-            data() {
-                return {
-                    newAdvert: { id: null, title: "", conditions: "", documents: [], startDate: "", endDate: "" },
-                    adverts: [],
-                    availableDocuments: ["Atıf Sayısı", "İndeksli Yayın", "Konferans Yayını"]
-                };
-            },
-            mounted() {
-                this.fetchAdverts();
-            },
-            methods: {
-                async fetchAdverts() {
-                    try {
-                        const response = await axios.get("<?php echo base_url('web/getAdverts'); ?>");
-                        this.adverts = response.data;
-                    } catch (error) {
-                        console.error("İlanlar yüklenirken hata oluştu:", error);
-                    }
-                },
-                async saveAdvert() {
-                    if (!this.newAdvert.title || !this.newAdvert.conditions || !this.newAdvert.startDate || !this.newAdvert.endDate) {
-                        alert("Tüm alanları doldurun!");
-                        return;
-                    }
-
-                    try {
-                        const response = await axios.post("<?php echo base_url('web/saveAdvert'); ?>", this.newAdvert);
-                        alert(response.data.message);
-                        this.fetchAdverts();
-                        this.newAdvert = { id: null, title: "", conditions: "", documents: [], startDate: "", endDate: "" };
-                    } catch (error) {
-                        console.error("İlan kaydedilirken hata oluştu:", error);
-                    }
-                },
-                editAdvert(index) {
-                    this.newAdvert = { ...this.adverts[index] };
-                    this.newAdvert.documents = JSON.parse(this.newAdvert.documents);
-                },
-                async deleteAdvert(id) {
-                    if (!confirm("Bu ilanı silmek istediğinizden emin misiniz?")) return;
-
-                    try {
-                        const response = await axios.delete(`<?php echo base_url('web/deleteAdvert/'); ?>${id}`);
-                        alert(response.data.message);
-                        this.fetchAdverts();
-                    } catch (error) {
-                        console.error("İlan silinirken hata oluştu:", error);
-                    }
-                }
-            }
-        }).mount("#app");
+    createApp({
+        data() {
+            return {
+                showForm: true
+            };
+        }
+    }).mount("#app");
     </script>
-
 </body>
+
 </html>
