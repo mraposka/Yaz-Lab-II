@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue Frontend</title>
+    <title>Vue JS dışında başka bi include ya da script css bişey yok bak</title>
     <script src="<?php echo base_url('/application/views/frontend/');?>vue.js"></script>
     <script src="<?php echo base_url('/application/views/frontend/');?>tailwind.js"></script>
 </head>
