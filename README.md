@@ -73,7 +73,7 @@ composer test:coverage
 
 Track the project's progress on **Trello**:  
 
-[![Trello Board](https://img.shields.io/badge/Trello-Yaz--Lab--II-blue?logo=trello)](https://trello.com/b/kJAghvKq)
+[![Trello Board](https://img.shields.io/badge/Trello-Yaz--Lab--II-blue?logo=trello)](https://trello.com/invite/b/67c4b85607bb6c186736c6fc/ATTI600973164aff15eca1d597c0419f6303C9EF7483/yaz-lab-ii)
 
 
 ## 📝 License
