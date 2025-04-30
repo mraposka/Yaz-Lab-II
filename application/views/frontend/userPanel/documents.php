@@ -60,7 +60,8 @@
         <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800">Dosya Yükle</h2>
 
         <form method="POST" enctype="multipart/form-data" @submit.prevent="submitForm">
-
+            <input type="hidden" name="app_id" value="<?php echo $app_id; ?>">
+            <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
             <!-- Belge listesi -->
             <div class="space-y-4">
                 <div v-for="(count, docName) in documentRequirements" :key="docName"
@@ -239,6 +240,8 @@
                 },
                 submitForm() {
                     const formData = new FormData();
+                    const appId = document.querySelector('input[name="app_id"]').value;
+                    const userId = document.querySelector('input[name="user_id"]').value;
                     let i=0;
                     // Dosyaları ve meta bilgilerini FormData'ya ekle
                     for (const docName in this.uploadedDocuments) {
@@ -251,17 +254,20 @@
                             i++;
                         });
                     }
-
-                    fetch('', {
+                    formData.append('app_id', appId);
+                    formData.append('user_id', userId);
+                    fetch('handleUpload', {
                         method: 'POST',
                         body: formData
-                    }).then(res => {
-                        if (res.ok) {
-                            alert("Başarıyla gönderildi!");
-                        } else {
-                            alert("Gönderim sırasında bir hata oluştu.");
+                    }).then(res => res.text())
+                    .then(responseText => {
+                        if(responseText==1){
+                            window.location.replace('<?php echo base_url('user/applications');?>');
+                        }else{
+                            console.log('Dosyalar yüklenirken bir hata oluştu.');
                         }
-                    }).catch(err => {
+                    })
+                    .catch(err => {
                         alert("Hata: " + err.message);
                     });
                 }

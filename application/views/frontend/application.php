@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>İlanlar</title>
-  <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="<?php echo base_url('application/views/frontend/vue.js'); ?>"></script>
+  <script src="<?php echo base_url('application/views/frontend/axios.min.js'); ?>"></script>
+  <script src="<?php echo base_url('application/views/frontend/tailwind.js'); ?>"></script>
+  <script src="<?php echo base_url('application/views/frontend/tailwind.css'); ?>"></script>
 </head>
 <body class="bg-[#fffaf2] flex flex-col items-center min-h-screen p-6 space-y-6">
   <!-- Sayfa Başlığı -->

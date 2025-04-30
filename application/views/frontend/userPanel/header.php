@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kullanıcı Panel</title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="<?php echo base_url('application/views/frontend/vue.global.js'); ?>"></script>
+    <script src="<?php echo base_url('application/views/frontend/axios.min.js'); ?>"></script>
     <script src="<?php echo base_url('application/views/frontend/tailwind.js'); ?>"></script>
 </head>
 
