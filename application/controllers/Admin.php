@@ -145,6 +145,7 @@ class Admin extends CI_Controller
         if(!$result){
             return($this->signup(0));
         }
+        //DB Insert
 
         $data = array(
             'name'    => $this->input->post('name', TRUE),
@@ -346,7 +347,25 @@ class Admin extends CI_Controller
                     $i++;
                 }
             }
-            //echo "<pre>";print_r($file_info);echo "</pre>";
+            
+            echo "<pre>";
+            print_r($file_info);
+            echo "</pre>";
+            /*
+                [3] => Array
+                (
+                    [document] => A1-A5 BELGESİ
+                    [file_name] => White.png
+                    [unique_id] => 67f4a15aa87768.31687115
+                    [target_path] => /var/www/html/yazlab/uploads/67f4a15aa87768.31687115-White.png
+                    [mime_type] => image/png
+                    [size] => 320
+                    [author] => Hayır
+                    [employees] => 4
+                    [description] => 4
+                    [cats] => A2
+                )
+            */
         }
 
         $data = [

@@ -73,12 +73,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 */
 $active_group = 'default';
 $query_builder = true;
-
 $db['default'] = array(
-    'dsn'	=> '',
-    'hostname' => '',
+    'dsn'      => '',
+    'hostname' => 'postgre.c342a4waouqr.us-east-2.rds.amazonaws.com',
     'username' => 'postgres',
-    'password' => 'postgres',
+    'password' => 'erqisn3G4FeZm0ViDKd3T68I8qaeb4D5LIXhPiJ5Q8eTwJfpDr',
     'database' => 'postgres',
     'port'     => '5432',
     'dbdriver' => 'postgre',
@@ -90,7 +89,7 @@ $db['default'] = array(
     'char_set' => 'utf8',
     'dbcollat' => 'utf8_general_ci',
     'swap_pre' => '',
-    'encrypt' => false,
+    'encrypt'  => false,
     'compress' => false,
     'stricton' => false,
     'failover' => array(),

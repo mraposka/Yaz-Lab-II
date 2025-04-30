@@ -140,8 +140,7 @@ class User extends CI_Controller
                 {
                     $meta = $this->findMetaByDocNameAndIndex($docName, $index);
                     $fileExtension=explode('.', $filename);
-                    /*
-                    echo "Dosya yüklendi: $filename<br>";
+                    /*echo "Dosya yüklendi: $filename<br>";
                     echo "UserID: " . $user_id . "<br>";
                     echo "AppID: " . $app_id . "<br>";
                     echo "Belge Adı: $docName<br>";
@@ -149,8 +148,7 @@ class User extends CI_Controller
                     echo "Kategori: " . htmlspecialchars($meta['category']) . "<br>";
                     echo "Yazar: -" . $meta['author'] . "<br>";
                     echo "Çalışan Sayısı: " . htmlspecialchars($meta['employees']) . "<br>";
-                    echo "Açıklama: " . htmlspecialchars($meta['description']) . "<br><hr>";
-                    */
+                    echo "Açıklama: " . htmlspecialchars($meta['description']) . "<br><hr>";*/
                     $docCat=$meta['category'];
                     $lead='BY=F';
                     if(strpos(strtolower($meta['author']),'evet')==0)

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juri Panel</title>
+    <script src="<?php echo base_url('application/views/frontend/vue.global.js'); ?>"></script>
     <script src="<?php echo base_url('application/views/frontend/tailwind.css'); ?>"></script>
 </head>
 

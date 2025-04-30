@@ -24,8 +24,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://3.17.139.227/';
-
+$config['base_url'] = 'http://3.140.190.21/yazlab/';
 /*
 |--------------------------------------------------------------------------
 | Index File

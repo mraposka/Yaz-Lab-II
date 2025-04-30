@@ -39,9 +39,10 @@
                 <label for="password" class="block text-sm font-medium text-gray-700">Şifre</label>
                 <input v-model="password" type="password" minlength="6" maxlength="12" id="password" name="password" class="mt-1 block w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required />
             </div>
-            <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-200">Giriş Yap</button>
-        </form>
-
+            <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-200">Giriş Yap</button><br>
+        </form><br>
+        <a href="<?php echo base_url('signup');?>"><button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-200">Kayıt Ol</button></a>
+        
     </div>
 
     <script>
